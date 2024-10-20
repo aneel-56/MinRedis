@@ -8,7 +8,7 @@ const server = net.createServer((connection) => {
   // Handle connection
   connection.on("data", (data) => {
     const commands = Buffer.from(data).toString().split("\r\n");
-    if (commands[2] === "ECHO") {
+    if (commands[2] == "ECHO") {
       const res = commands[4];
       const len = res.length;
       process.stdout.write(commands[4]);
