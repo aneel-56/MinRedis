@@ -11,6 +11,10 @@ const server = net.createServer((connection) => {
     if (data.toString() === "*1\r\n$4\r\nPING\r\n")
       connection.write("+PONG\r\n");
     // connection.end();
+
+    if (data.toString === "hey") {
+      connection.write("$3\r\nhey\r\n");
+    }
   });
 });
 //
