@@ -11,10 +11,10 @@ const server = net.createServer((connection) => {
     if (commands[2] == "ECHO") {
       const res = commands[4];
       const len = res.length;
-      process.stdout.write(commands[4]);
+      //   process.stdout.write(commands[4]);
       connection.write("$" + len + "\r\n" + res + "\r\n");
     }
-    console.log(commands);
+    // console.log(commands);
     connection.write("+PONG\r\n");
   });
 });
