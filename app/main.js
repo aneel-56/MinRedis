@@ -8,7 +8,7 @@ const server = net.createServer((connection) => {
   // Handle connection
   connection.on("data", (data) => {
     console.log({ data: data.toString() });
-    if (data.toString() === "*1\r\n$4\r\nPING\r\n")
+    if (data.toString() === "+*1\r\n$4\r\nPING\r\n")
       connection.write("+PONG\r\n");
     connection.end();
   });
