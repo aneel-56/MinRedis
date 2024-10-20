@@ -12,7 +12,7 @@ const server = net.createServer((connection) => {
       connection.write("+PONG\r\n");
     // connection.end();
 
-    if (data.toString() === "*2\r\n$4\r\nECHO\r\n$3\r\nhey\r\n") {
+    if (data[0] === "ECHO" && data[1] === "*2\r\n$4\r\nECHO\r\n$3\r\nhey\r\n") {
       connection.write("$3\r\nhey\r\n");
     }
   });
