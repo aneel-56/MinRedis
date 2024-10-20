@@ -9,8 +9,9 @@ const server = net.createServer((connection) => {
   connection.on("data", (data) => {
     const commands = Buffer.from(data).toString().split("\r\n");
     if (commands[2] === "ECHO") {
+      const res = commands[2];
       process.stdout.write(commands[4]);
-      connection.write(commands[4]);
+      connection.write(`$${commands.length}\r\n${res}\r\n`);
     }
     console.log(commands);
     connection.write("+PONG\r\n");
