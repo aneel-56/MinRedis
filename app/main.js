@@ -7,15 +7,14 @@ console.log("Logs from your program will appear here!");
 const server = net.createServer((connection) => {
   // Handle connection
   connection.on("data", (data) => {
-    // console.log({ data: data.toString() });
-    if (data.toString() === "*1\r\n$4\r\nPING\r\n")
-      connection.write("+PONG\r\n");
-    // connection.end();
-
-    if (data[0] === "ECHO" && data[1] === "*2\r\n$4\r\nECHO\r\n$3\r\nhey\r\n") {
-      connection.write("$3\r\nhey\r\n");
+    const commands = Buffer.from(data).toString().split("\r\n");
+    if (commands[2] === "ECHO") {
+      process.stdout.write(commands[4]);
+      connection.write(commands[4]);
     }
+    console.log(commands);
+    connection.write("+PONG\r\n");
   });
 });
 //
-server.listen(6379, "127.0.0.1");
+server.listen(4492, "127.0.0.1");
