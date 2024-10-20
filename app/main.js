@@ -12,7 +12,7 @@ const server = net.createServer((connection) => {
       const res = commands[4];
       const len = res.length;
       process.stdout.write(commands[4]);
-      connection.write("$" + len + "\r\n" + str + "\r\n");
+      connection.write("$" + len + "\r\n" + res + "\r\n");
     }
     console.log(commands);
     connection.write("+PONG\r\n");
