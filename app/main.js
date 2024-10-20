@@ -18,4 +18,4 @@ const server = net.createServer((connection) => {
   });
 });
 //
-server.listen(4492, "127.0.0.1");
+server.listen(6379, "127.0.0.1");
