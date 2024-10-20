@@ -15,7 +15,7 @@ const server = net.createServer((connection) => {
       connection.write("$" + len + "\r\n" + res + "\r\n");
     }
     // console.log(commands);
-    connection.write("+PONG\r\n");
+    // connection.write("+PONG\r\n");
   });
 });
 //
