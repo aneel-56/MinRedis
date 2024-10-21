@@ -18,8 +18,11 @@ const server = net.createServer((connection) => {
 
     if (commands[2] === "GET") {
       const res = store.get(commands[4]);
-      connection.write("$" + res.length + "\r\n" + res + "\r\n");
-      if (!res) {
+      if (res) {
+        // Respond with bulk string if key exists
+        connection.write("$" + res.length + "\r\n" + res + "\r\n");
+      } else {
+        // Respond with null bulk string if key does not exist
         connection.write("$-1\r\n");
       }
     }
