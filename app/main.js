@@ -12,7 +12,7 @@ const server = net.createServer((connection) => {
     }
 
     if (commands[2] === "GET") {
-      const res = store[commands[4]];
+      const res = store.get(commands[4]);
       connection.write("$" + res.length + "\r\n" + res + "\r\n");
     }
 
