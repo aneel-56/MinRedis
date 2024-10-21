@@ -12,8 +12,9 @@ const server = net.createServer((connection) => {
     }
 
     if (commands[2] === "GET") {
+      const res = commands[4];
       connection.write(
-        "$" + store.size + "\r\n" + store.get(commands[3]) + "\r\n"
+        "$" + res.length + "\r\n" + store.get(commands[4]) + "\r\n"
       );
     }
 
@@ -23,6 +24,7 @@ const server = net.createServer((connection) => {
       const l = str.length;
       return connection.write("$" + l + "\r\n" + str + "\r\n");
     }
+    connection.write("+PONG\r\n");
   });
 });
 //
