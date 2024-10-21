@@ -19,6 +19,9 @@ const server = net.createServer((connection) => {
     if (commands[2] === "GET") {
       const res = store.get(commands[4]);
       connection.write("$" + res.length + "\r\n" + res + "\r\n");
+      if (!res) {
+        connection.write("$-1\r\n");
+      }
     }
 
     // *2\r\n $5 \r\n ECHO \r\n $3 \r\n hey \r\n
