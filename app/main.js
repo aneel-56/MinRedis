@@ -22,7 +22,7 @@ const server = net.createServer((connection) => {
       const l = str.length;
       return connection.write("$" + l + "\r\n" + str + "\r\n");
     }
-    connection.write("+PONG\r\n");
+    if (commands[2] === "PING") connection.write("+PONG\r\n");
   });
 });
 //
