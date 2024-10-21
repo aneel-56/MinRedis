@@ -33,8 +33,8 @@ const server = net.createServer((connection) => {
       const l = str.length;
       return connection.write("$" + l + "\r\n" + str + "\r\n");
     }
-    console.log(commands);
-    console.log(commands.length);
+    // console.log(commands);
+    // console.log(commands.length);
 
     connection.write("+PONG\r\n");
   });
