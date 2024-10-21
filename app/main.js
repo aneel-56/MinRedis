@@ -11,7 +11,7 @@ const server = net.createServer((connection) => {
       store.set(commands[4], commands[6]);
       if (commands[10]) {
         setTimeout(() => {
-          store.delete("commands[4");
+          store.delete("commands[4]");
         }, commands[10]);
       }
     }
