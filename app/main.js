@@ -15,8 +15,6 @@ const server = net.createServer((connection) => {
       connection.write(
         "$" + store.size + "\r\n" + store.get(commands[3]) + "\r\n"
       );
-    } else {
-      connection.write("+PONG\r\n");
     }
 
     // *2\r\n $5 \r\n ECHO \r\n $3 \r\n hey \r\n
