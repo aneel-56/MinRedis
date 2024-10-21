@@ -22,9 +22,9 @@ const server = net.createServer((connection) => {
 
       if (value) {
         connection.write("$" + value.length + "\r\n" + value + "\r\n");
-      } else {
-        connection.write("$-1\r\n"); // Redis protocol for 'nil'
-      }
+      // } else {
+      //   connection.write("$-1\r\n"); // Redis protocol for 'nil'
+      // }
     }
 
     // *2\r\n $5 \r\n ECHO \r\n $3 \r\n hey \r\n
@@ -36,7 +36,7 @@ const server = net.createServer((connection) => {
     // console.log(commands);
     // console.log(commands.length);
 
-    // connection.write("+PONG\r\n");
+    connection.write("+PONG\r\n");
   });
 });
 //
