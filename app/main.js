@@ -7,8 +7,13 @@ const server = net.createServer((connection) => {
   connection.on("data", (data) => {
     const commands = Buffer.from(data).toString().split("\r\n");
     if (commands[2] === "SET") {
-      store.set(commands[4], commands[6]);
       connection.write("+OK\r\n"); // Redis protocol for success
+      store.set(commands[4], commands[6]);
+      if (commands[10]) {
+        setTimeout(() => {
+          delete store[commands[4]];
+        }, commands[10]);
+      }
     }
 
     if (commands[2] === "GET") {
