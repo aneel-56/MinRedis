@@ -11,9 +11,9 @@ const server = net.createServer((connection) => {
       connection.write("+OK\r\n"); // Redis protocol for success
     }
 
-    if (commands[0] === "GET") {
+    if (commands[2] === "GET") {
       connection.write(
-        "$" + store.size + "\r\n" + store.get(commands[1]) + "\r\n"
+        "$" + store.size + "\r\n" + store.get(commands[3]) + "\r\n"
       );
     } else {
       connection.write("+PONG\r\n");
