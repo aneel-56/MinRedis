@@ -1,28 +1,22 @@
 const net = require("net");
 console.log("Logs from your program will appear here!");
 
-const store = {};
+const store = new Map();
 const server = net.createServer((connection) => {
   // Handle connection
   connection.on("data", (data) => {
     const commands = Buffer.from(data).toString().split("\r\n");
     if (commands[0] === "SET") {
-      const key = commands[1];
-      const value = commands[2];
-      store[key] = value; // Store the key-value pair
+      store.set(commands[1], commands[2]);
       connection.write("+OK\r\n"); // Redis protocol for success
     }
 
     if (commands[0] === "GET") {
-      const key = commands[1];
-      const value = store[key]; // Retrieve the value from the store
-
-      if (value) {
-        const l = value.length;
-        connection.write("$" + l + "\r\n" + value + "\r\n");
-      } else {
-        connection.write("+PONG\r\n");
-      }
+      connection.write(
+        "$" + store.size + "\r\n" + store.get(commands[1]) + "\r\n"
+      );
+    } else {
+      connection.write("+PONG\r\n");
     }
 
     // *2\r\n $5 \r\n ECHO \r\n $3 \r\n hey \r\n
