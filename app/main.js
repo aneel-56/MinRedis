@@ -12,19 +12,17 @@ const server = net.createServer((connection) => {
     }
 
     if (commands[2] === "GET") {
-      const res = commands[4];
-      connection.write(
-        "$" + res.length + "\r\n" + store.get(commands[4]) + "\r\n"
-      );
+      const res = store[commands[3]];
+      connection.write("$" + res.length + "\r\n" + res + "\r\n");
     }
 
     // *2\r\n $5 \r\n ECHO \r\n $3 \r\n hey \r\n
     if (commands[2] == "ECHO") {
-      const str = commands[3];
+      const str = commands[4];
       const l = str.length;
       return connection.write("$" + l + "\r\n" + str + "\r\n");
     }
-    // connection.write("+PONG\r\n");
+    connection.write("+PONG\r\n");
   });
 });
 //
