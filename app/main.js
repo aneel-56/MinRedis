@@ -22,7 +22,8 @@ const server = net.createServer((connection) => {
 
       if (value) {
         connection.write("$" + value.length + "\r\n" + value + "\r\n");
-      // } else {
+      }
+      // else {
       //   connection.write("$-1\r\n"); // Redis protocol for 'nil'
       // }
     }
