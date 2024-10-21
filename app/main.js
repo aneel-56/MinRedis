@@ -6,8 +6,8 @@ const server = net.createServer((connection) => {
   // Handle connection
   connection.on("data", (data) => {
     const commands = Buffer.from(data).toString().split("\r\n");
-    if (commands[0] === "SET") {
-      store.set(commands[1], commands[2]);
+    if (commands[2] === "SET") {
+      store.set(commands[3], commands[4]);
       connection.write("+OK\r\n"); // Redis protocol for success
     }
 
@@ -20,11 +20,11 @@ const server = net.createServer((connection) => {
     }
 
     // *2\r\n $5 \r\n ECHO \r\n $3 \r\n hey \r\n
-    // if (commands[2] == "ECHO") {
-    //   const str = commands[4];
-    //   const l = str.length;
-    //   return connection.write("$" + l + "\r\n" + str + "\r\n");
-    // }
+    if (commands[2] == "ECHO") {
+      const str = commands[4];
+      const l = str.length;
+      return connection.write("$" + l + "\r\n" + str + "\r\n");
+    }
   });
 });
 //
