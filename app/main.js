@@ -1,10 +1,7 @@
 const net = require("net");
-
-// You can use print statements as follows for debugging, they'll be visible when running tests.
 console.log("Logs from your program will appear here!");
 
 const store = {};
-// Uncomment this block to pass the first stage
 const server = net.createServer((connection) => {
   // Handle connection
   connection.on("data", (data) => {
@@ -21,13 +18,11 @@ const server = net.createServer((connection) => {
       const value = store[key]; // Retrieve the value from the store
 
       if (value) {
-        connection.write("$" + value.length + "\r\n" + value + "\r\n");
+        const l = value.length;
+        connection.write("$" + l + "\r\n" + value + "\r\n");
       } else {
         connection.write("+PONG\r\n");
       }
-      // else {
-      //   connection.write("$-1\r\n"); // Redis protocol for 'nil'
-      // }
     }
 
     // *2\r\n $5 \r\n ECHO \r\n $3 \r\n hey \r\n
@@ -36,8 +31,6 @@ const server = net.createServer((connection) => {
       const l = str.length;
       return connection.write("$" + l + "\r\n" + str + "\r\n");
     }
-    // console.log(commands);
-    // console.log(commands.length);
   });
 });
 //
