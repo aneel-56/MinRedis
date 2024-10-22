@@ -3,13 +3,14 @@ const fs = require("fs");
 console.log("Logs from your program will appear here!");
 
 const store = new Map();
-const arguments = new Map();
+const dataStore = new Map(); // Store for configuration and other data
 
+// Parse command-line arguments for --dir and --dbfilename
 const [, , dirFlag, dirPath, dbfilenameFlag, dbfilename] = process.argv;
 
 if (dirFlag === "--dir" && dbfilenameFlag === "--dbfilename") {
-  arguments.set("dir", dirPath);
-  arguments.set("dbfilename", dbfilename);
+  dataStore.set("dir", dirPath);
+  dataStore.set("dbfilename", dbfilename);
 }
 const server = net.createServer((connection) => {
   // Handle connection
@@ -43,10 +44,13 @@ const server = net.createServer((connection) => {
       const l = str.length;
       return connection.write("$" + l + "\r\n" + str + "\r\n");
     }
-    if (commands[2] === "CONFIG" && commands[3] === "GET") {
-      const param = commands[4];
-      if (arguments.has(param)) {
-        const result = arguments.get(param);
+    const command = commands[2]?.toLowerCase(); // "config"
+    const subCommand = commands[3]?.toLowerCase(); // "get"
+    const param = commands[4]; // e.g., "dir" or "dbfilename"
+
+    if (command === "config" && subCommand === "get") {
+      if (dataStore.has(param)) {
+        const result = dataStore.get(param);
         const responseArr = [
           `$${param.length}\r\n${param}\r\n`,
           `$${result.length}\r\n${result}\r\n`,
