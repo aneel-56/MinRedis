@@ -2,7 +2,7 @@ const net = require("net");
 const fs = require("fs");
 console.log("Logs from your program will appear here!");
 
-const store = new Map();
+// const store = new Map();
 const dataStore = new Map(); // Store for configuration and other data
 
 // Parse command-line arguments for --dir and --dbfilename
