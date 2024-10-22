@@ -16,7 +16,9 @@ const server = net.createServer((connection) => {
   // Handle connection
   connection.on("data", (data) => {
     const commands = Buffer.from(data).toString().split("\r\n");
-
+    if (!commands) {
+      connection.write("+NOTOK\r\n");
+    }
     if (commands[2] === "SET") {
       connection.write("+OK\r\n"); // Redis protocol for success
       store.set(commands[4], commands[6]);
