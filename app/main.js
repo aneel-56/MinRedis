@@ -44,11 +44,9 @@ const server = net.createServer((connection) => {
       const l = str.length;
       return connection.write("$" + l + "\r\n" + str + "\r\n");
     }
-    const command = commands[2]?.toLowerCase(); // "config"
-    const subCommand = commands[3]?.toLowerCase(); // "get"
-    const param = commands[4]; // e.g., "dir" or "dbfilename"
 
-    if (command === "config" && subCommand === "get") {
+    if (commands[2] === "CONFIG" && commands[3] === "GET") {
+      const param = commands[4]; // e.g., "dir" or "dbfilename"
       if (dataStore.has(param)) {
         const result = dataStore.get(param);
         const responseArr = [
