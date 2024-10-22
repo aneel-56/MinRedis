@@ -54,12 +54,13 @@ const server = net.createServer((connection) => {
         const value = arguments.get(param);
 
         // Construct RESP array with the parameter and its value
-        const res = `*2\r\n$${param.length}\r\n${param}\r\n$${value.length}\r\n${value}\r\n`;
+        const res =  `*2\r\n$${param.length}\r\n${param}\r\n$${value.length}\r\n${value}\r\n`;
         connection.write(res);
       } else {
         connection.write("$-1\r\n"); // If parameter not found
       }
-    } else connection.write("+PONG\r\n");
+    }
+    // } else connection.write("+PONG\r\n");
   });
 });
 
