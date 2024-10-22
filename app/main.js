@@ -9,14 +9,13 @@ const server = net.createServer((connection) => {
   // Handle connection
   connection.on("data", (data) => {
     const commands = Buffer.from(data).toString().split("\r\n");
-    for (let i = 2; i < process.argv.length; i++) {
-      if (process.argv[i] === "--dir" && process.argv[i + 1]) {
-        arguments.set("dir", process.argv[i + 1]);
-        i++; // Skip the next element (since it's the value)
-      } else if (process.argv[i] === "--dbfilename" && process.argv[i + 1]) {
-        arguments.set("dbfilename", process.argv[i + 1]);
-        i++; // Skip the next element (since it's the value)
-      }
+    const [fileDir, fileName] = [
+      process.argv[1] ? process.argv[2] : null,
+      process.argv[3] ? process.argv[4] : null,
+    ];
+    if (fileName && fileDir) {
+      arguments.set("dir", fileDir);
+      arguments.set("dbfilName", fileName);
     }
 
     if (commands[2] === "SET") {
@@ -54,7 +53,7 @@ const server = net.createServer((connection) => {
         const value = arguments.get(param);
 
         // Construct RESP array with the parameter and its value
-        const res =  `*2\r\n$${param.length}\r\n${param}\r\n$${value.length}\r\n${value}\r\n`;
+        const res = `*2\r\n$${param.length}\r\n${param}\r\n$${value.length}\r\n${value}\r\n`;
         connection.write(res);
       } else {
         connection.write("$-1\r\n"); // If parameter not found
