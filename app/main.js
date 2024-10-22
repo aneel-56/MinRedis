@@ -7,15 +7,15 @@ const dataStore = new Map(); // Store for configuration and other data
 
 // Parse command-line arguments for --dir and --dbfilename
 const server = net.createServer((connection) => {
-  const [, , dirFlag, dirPath, dbfilenameFlag, dbfilename] = process.argv;
-
-  if (dirFlag === "--dir" && dbfilenameFlag === "--dbfilename") {
-    dataStore.set("dir", dirPath);
-    dataStore.set("dbfilename", dbfilename);
-  }
   // Handle connection
   connection.on("data", (data) => {
     const commands = Buffer.from(data).toString().split("\r\n");
+    const [, , dirFlag, dirPath, dbfilenameFlag, dbfilename] = process.argv;
+
+    if (dirFlag === "--dir" && dbfilenameFlag === "--dbfilename") {
+      dataStore.set("dir", dirPath);
+      dataStore.set("dbfilename", dbfilename);
+    }
     if (!commands) {
       connection.write("+NOTOK\r\n");
     }
