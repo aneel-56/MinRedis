@@ -46,21 +46,21 @@ const server = net.createServer((connection) => {
       const l = str.length;
       return connection.write("$" + l + "\r\n" + str + "\r\n");
     }
-    if (commands[2] === "CONFIG" && commands[4] === "GET") {
-      const param = commands[4]; // The parameter being requested, either "dir" or "dbfilename"
+    if (commands[2] === "CONFIG" && commands[3] === "GET") {
+      const param = commands[4]; // The parameter being requested
 
-      // Check if the requested parameter exists in the Map
       if (arguments.has(param)) {
         const value = arguments.get(param);
 
-        // Construct RESP array with the parameter and its value
-        const res = `*2\r\n$${param.length}\r\n${param}\r\n$${value.length}\r\n${value}\r\n`;
-        connection.write(res);
+        // Construct the RESP array response for CONFIG GET
+        const response = `*2\r\n$${param.length}\r\n${param}\r\n$${value.length}\r\n${value}\r\n`;
+        connection.write(response); // Send the response to the client
       } else {
-        // Handle unknown parameter case
         connection.write("-ERR unknown parameter\r\n");
       }
-      // connection.write("+PONG\r\n");
+    } else {
+      // Default PONG response for other commands
+      connection.write("+PONG\r\n");
     }
   });
 });
