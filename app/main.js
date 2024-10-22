@@ -1,4 +1,5 @@
 const net = require("net");
+const fs = require("fs");
 console.log("Logs from your program will appear here!");
 
 const store = new Map();
@@ -43,6 +44,13 @@ const server = net.createServer((connection) => {
       console.log(result);
     }
     if (commands[2] === "PING") connection.write("+PONG\r\n");
+    if (commands[1] === "--dir") {
+      store.set(commands[0], commands[2]);
+      const data = fs.readFileSync(
+        path.resolve(path.cwd(), commands[2], commands[4])
+      );
+      console.log(data);
+    }
   });
 });
 //
