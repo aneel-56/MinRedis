@@ -6,8 +6,15 @@ const store = new Map();
 const arguments = new Map();
 
 const server = net.createServer((connection) => {
-  arguments.set(process.argv[1], process.argv[2]);
-  arguments.set(process.argv[3], process.argv[4]);
+  for (let i = 2; i < process.argv.length; i++) {
+    if (process.argv[i] === "--dir" && process.argv[i + 1]) {
+      arguments.set("dir", process.argv[i + 1]);
+      i++; // Skip the next element (since it's the value)
+    } else if (process.argv[i] === "--dbfilename" && process.argv[i + 1]) {
+      arguments.set("dbfilename", process.argv[i + 1]);
+      i++; // Skip the next element (since it's the value)
+    }
+  }
   // Handle connection
   connection.on("data", (data) => {
     const commands = Buffer.from(data).toString().split("\r\n");
@@ -40,10 +47,18 @@ const server = net.createServer((connection) => {
       const l = str.length;
       return connection.write("$" + l + "\r\n" + str + "\r\n");
     }
-    if (commands[2] === "config" && commands[3] === "GET") {
-      return `*2\r\n$${arguments.size}\r\n${arguments.get(
-        dir
-      )}\r\n${argumnets.get(dbfileName)}\r\n}`;
+    if (commands[2] === "CONFIG" && commands[3] === "GET") {
+      const param = commands[4]; // The parameter being requested, either "dir" or "dbfilename"
+
+      // Check if the requested parameter exists in the Map
+      if (arguments.has(param)) {
+        const value = arguments.get(param);
+
+        // Construct RESP array with the parameter and its value
+        return `*2\r\n$${param.length}\r\n${param}\r\n$${value.length}\r\n${value}\r\n`;
+      } else {
+        return "-ERR unknown parameter\r\n"; // If parameter not found
+      }
     }
 
     if (commands[2] === "PING") connection.write("+PONG\r\n");
