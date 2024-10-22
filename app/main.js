@@ -6,13 +6,15 @@ const store = new Map();
 const arguments = new Map();
 
 const server = net.createServer((connection) => {
-  const [fileDir, fileName] = [
-    process.argv[1] ? process.argv[2] : null,
-    process.argv[3] ? process.argv[4] : null,
-  ];
-  if (fileName && fileDir) {
-    arguments.set("dir", fileDir);
-    arguments.set("dbfilName", fileName);
+  if (process.argv[1] === "--dir") {
+    const [fileDir, fileName] = [
+      process.argv[1] ? process.argv[2] : null,
+      process.argv[3] ? process.argv[4] : null,
+    ];
+    if (fileName && fileDir) {
+      arguments.set("dir", fileDir);
+      arguments.set("dbfilName", fileName);
+    }
   }
   // Handle connection
   connection.on("data", (data) => {
@@ -55,6 +57,9 @@ const server = net.createServer((connection) => {
         // Construct RESP array with the parameter and its value
         const res = `*2\r\n$${param.length}\r\n${param}\r\n$${value.length}\r\n${value}\r\n`;
         connection.write(res);
+      } else {
+        // Handle unknown parameter case
+        connection.write("-ERR unknown parameter\r\n");
       }
       // connection.write("+PONG\r\n");
     }
