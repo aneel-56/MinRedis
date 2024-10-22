@@ -5,20 +5,17 @@ console.log("Logs from your program will appear here!");
 const store = new Map();
 const arguments = new Map();
 
+const [, , dirFlag, dirPath, dbfilenameFlag, dbfilename] = process.argv;
+
+if (dirFlag === "--dir" && dbfilenameFlag === "--dbfilename") {
+  arguments.set("dir", dirPath);
+  arguments.set("dbfilename", dbfilename);
+}
 const server = net.createServer((connection) => {
   // Handle connection
   connection.on("data", (data) => {
     const commands = Buffer.from(data).toString().split("\r\n");
-    if (process.argv.includes("--dir") && process.argv.includes("--dbfilename")) {
-      const fileDir = process.argv[process.argv.indexOf("--dir") + 1];
-      const fileName = process.argv[process.argv.indexOf("--dbfilename") + 1];
-  
-      if (fileName && fileDir) {
-        arguments.set("dir", fileDir);
-        arguments.set("dbfilName", fileName);
-      }
-    }
-    
+
     if (commands[2] === "SET") {
       connection.write("+OK\r\n"); // Redis protocol for success
       store.set(commands[4], commands[6]);
@@ -47,20 +44,20 @@ const server = net.createServer((connection) => {
       return connection.write("$" + l + "\r\n" + str + "\r\n");
     }
     if (commands[2] === "CONFIG" && commands[3] === "GET") {
-      const param = commands[4]; // The parameter being requested
-
+      const param = commands[4];
       if (arguments.has(param)) {
-        const value = arguments.get(param);
-
-        // Construct the RESP array response for CONFIG GET
-        const response = `*2\r\n$${param.length}\r\n${param}\r\n$${value.length}\r\n${value}\r\n`;
-        connection.write(response); // Send the response to the client
+        const result = arguments.get(param);
+        const responseArr = [
+          `$${param.length}\r\n${param}\r\n`,
+          `$${result.length}\r\n${result}\r\n`,
+        ];
+        const redisResponse = `*2\r\n${responseArr.join("")}`;
+        connection.write(redisResponse); // Send the formatted response
       } else {
         connection.write("-ERR unknown parameter\r\n");
       }
     } else {
-      // Default PONG response for other commands
-      connection.write("+PONG\r\n");
+      connection.write("+PONG\r\n"); // Default response for any unsupported commands
     }
   });
 });
