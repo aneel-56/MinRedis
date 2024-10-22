@@ -45,7 +45,7 @@ const server = net.createServer((connection) => {
       const l = str.length;
       return connection.write("$" + l + "\r\n" + str + "\r\n");
     }
-    if (commands[2] === "CONFIG" && commands[3] === "GET") {
+    if (commands[2] === "CONFIG" && commands[4] === "GET") {
       const param = commands[4]; // The parameter being requested, either "dir" or "dbfilename"
 
       // Check if the requested parameter exists in the Map
@@ -58,8 +58,7 @@ const server = net.createServer((connection) => {
       } else {
         connection.write("$-1\r\n"); // If parameter not found
       }
-    }
-    // } else connection.write("+PONG\r\n");
+    } else connection.write("+PONG\r\n");
   });
 });
 
