@@ -6,18 +6,19 @@ const store = new Map();
 const arguments = new Map();
 
 const server = net.createServer((connection) => {
-  for (let i = 2; i < process.argv.length; i++) {
-    if (process.argv[i] === "--dir" && process.argv[i + 1]) {
-      arguments.set("dir", process.argv[i + 1]);
-      i++; // Skip the next element (since it's the value)
-    } else if (process.argv[i] === "--dbfilename" && process.argv[i + 1]) {
-      arguments.set("dbfilename", process.argv[i + 1]);
-      i++; // Skip the next element (since it's the value)
-    }
-  }
   // Handle connection
   connection.on("data", (data) => {
     const commands = Buffer.from(data).toString().split("\r\n");
+    for (let i = 2; i < process.argv.length; i++) {
+      if (process.argv[i] === "--dir" && process.argv[i + 1]) {
+        arguments.set("dir", process.argv[i + 1]);
+        i++; // Skip the next element (since it's the value)
+      } else if (process.argv[i] === "--dbfilename" && process.argv[i + 1]) {
+        arguments.set("dbfilename", process.argv[i + 1]);
+        i++; // Skip the next element (since it's the value)
+      }
+    }
+
     if (commands[2] === "SET") {
       connection.write("+OK\r\n"); // Redis protocol for success
       store.set(commands[4], commands[6]);
