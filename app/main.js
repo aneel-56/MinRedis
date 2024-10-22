@@ -6,11 +6,10 @@ const store = new Map();
 const arguments = new Map();
 
 const server = net.createServer((connection) => {
-  if (process.argv[1] === "--dir") {
-    const [fileDir, fileName] = [
-      process.argv[1] ? process.argv[2] : null,
-      process.argv[3] ? process.argv[4] : null,
-    ];
+  if (process.argv.includes("--dir") && process.argv.includes("--dbfilename")) {
+    const fileDir = process.argv[process.argv.indexOf("--dir") + 1];
+    const fileName = process.argv[process.argv.indexOf("--dbfilename") + 1];
+
     if (fileName && fileDir) {
       arguments.set("dir", fileDir);
       arguments.set("dbfilName", fileName);
