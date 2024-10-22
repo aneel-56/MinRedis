@@ -56,6 +56,7 @@ const server = net.createServer((connection) => {
           `$${result.length}\r\n${result}\r\n`,
         ];
         const redisResponse = `*2\r\n${responseArr.join("")}`;
+        console.log(redisResponse);
         return redisResponse; // Send the formatted response
       } else {
         connection.write("-ERR unknown parameter\r\n");
