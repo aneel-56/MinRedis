@@ -7,6 +7,10 @@ const server = net.createServer((connection) => {
   connection.on("data", (data) => {
     const commands = Buffer.from(data).toString().split("\r\n");
     console.log(commands);
+
+    if (commands[0] === "--dir") {
+      console.log(commands[0]);
+    }
     if (commands[2] === "SET") {
       connection.write("+OK\r\n"); // Redis protocol for success
       store.set(commands[4], commands[6]);
