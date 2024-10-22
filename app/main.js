@@ -8,9 +8,6 @@ const server = net.createServer((connection) => {
     const commands = Buffer.from(data).toString().split("\r\n");
     console.log(commands);
 
-    if (commands[0] === "--dir") {
-      console.log(commands[0]);
-    }
     if (commands[2] === "SET") {
       connection.write("+OK\r\n"); // Redis protocol for success
       store.set(commands[4], commands[6]);
@@ -43,6 +40,7 @@ const server = net.createServer((connection) => {
       store.set("dir", path);
       store.set("dbfilename", file);
       let result = store.get(value);
+      console.log(result);
     }
     if (commands[2] === "PING") connection.write("+PONG\r\n");
   });
