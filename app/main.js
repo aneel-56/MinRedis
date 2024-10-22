@@ -49,6 +49,7 @@ const server = net.createServer((connection) => {
       const data = fs.readFileSync(
         path.resolve(path.cwd(), commands[2], commands[4])
       );
+      connection.write(data);
       console.log(data);
     }
   });
