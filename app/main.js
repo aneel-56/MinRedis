@@ -7,8 +7,8 @@ const server = net.createServer((connection) => {
   // Handle connection
   connection.on("data", (data) => {
     const commands = Buffer.from(data).toString().split("\r\n");
-    console.log(commands);
-
+    const [, , dir, path, dbfilename, file] = process.argv;
+    console.log([dir, path, dbfilename, file]);
     if (commands[2] === "SET") {
       connection.write("+OK\r\n"); // Redis protocol for success
       store.set(commands[4], commands[6]);
