@@ -40,8 +40,10 @@ const server = net.createServer((connection) => {
       const l = str.length;
       return connection.write("$" + l + "\r\n" + str + "\r\n");
     }
-    if(commands[2] === "config" && commands[3] === "GET"){
-      return `*2\r\n$${arguments.size}\r\n${arguments.get(dir)}\r\n${argumnets.get(dbfileName)\r\n}`
+    if (commands[2] === "config" && commands[3] === "GET") {
+      return `*2\r\n$${arguments.size}\r\n${arguments.get(
+        dir
+      )}\r\n${argumnets.get(dbfileName)}\r\n}`;
     }
 
     if (commands[2] === "PING") connection.write("+PONG\r\n");
