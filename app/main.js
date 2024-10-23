@@ -41,6 +41,7 @@ const server = net.createServer((connection) => {
     }
 
     if (commands[2] === "CONFIG") {
+      const value  = commands[6];
       dataStore.set("dir", path);
       dataStore.set("dbfilename", file);
       let result = dataStore.get(value);
