@@ -52,7 +52,7 @@ const server = net.createServer((connection) => {
       const redisResponse = `*${responseArr.length}\r\n${responseArr.join("")}`;
       connection.write(redisResponse);
     }
-    connection.write("+PONG\r\n");
+    // connection.write("+PONG\r\n");
   });
 });
 
