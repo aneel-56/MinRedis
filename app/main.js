@@ -10,15 +10,8 @@ const server = net.createServer((connection) => {
   // Handle connection
   connection.on("data", (data) => {
     const commands = Buffer.from(data).toString().split("\r\n");
-    const [, , dirFlag, dirPath, dbfilenameFlag, dbfilename] = process.argv;
+    const [, , dir, path, dbfilename, file] = process.argv;
 
-    if (dirFlag === "--dir" && dbfilenameFlag === "--dbfilename") {
-      dataStore.set("dir", dirPath);
-      dataStore.set("dbfilename", dbfilename);
-    }
-    if (!commands) {
-      connection.write("+NOTOK\r\n");
-    }
     if (commands[2] === "SET") {
       connection.write("+OK\r\n"); // Redis protocol for success
       store.set(commands[4], commands[6]);
@@ -48,19 +41,15 @@ const server = net.createServer((connection) => {
     }
 
     if (commands[2] === "CONFIG") {
-      const param = commands[4]; // e.g., "dir" or "dbfilename"
-      if (dataStore.has(param)) {
-        const result = dataStore.get(param);
-        const responseArr = [
-          `$${param.length}\r\n${param}\r\n`,
-          `$${result.length}\r\n${result}\r\n`,
-        ];
-        const redisResponse = `*2\r\n${responseArr.join("")}`;
-        console.log(redisResponse);
-        return redisResponse; // Send the formatted response
-      } else {
-        connection.write("-ERR unknown parameter\r\n");
-      }
+      dataStore.set("dir", path);
+      dataStore.set("dbfilename", file);
+      let result = dataStore.get(value);
+      const responseArr = [
+        `$${value.length}\r\n${value}\r\n`,
+        `$${result.length}\r\n${result}\r\n`,
+      ];
+      const redisResponse = `*${responseArr.length}\r\n${responseArr.join("")}`;
+      connection.write(redisResponse);
     } else {
       connection.write("+PONG\r\n"); // Default response for any unsupported commands
     }
