@@ -52,7 +52,7 @@ const server = net.createServer((connection) => {
       const redisResponse = `*${responseArr.length}\r\n${responseArr.join("")}`;
       connection.write(redisResponse);
     }
-    if (commands[2] === "PONG") connection.write("+PONG\r\n");
+    if (commands[2] === "PING") connection.write("+PONG\r\n");
   });
 });
 
