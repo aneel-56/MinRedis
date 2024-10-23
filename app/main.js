@@ -47,7 +47,7 @@ const server = net.createServer((connection) => {
       return connection.write("$" + l + "\r\n" + str + "\r\n");
     }
 
-    if (commands[2] === "CONFIG" && commands[3] === "GET") {
+    if (commands[2] === "CONFIG") {
       const param = commands[4]; // e.g., "dir" or "dbfilename"
       if (dataStore.has(param)) {
         const result = dataStore.get(param);
