@@ -41,7 +41,7 @@ const server = net.createServer((connection) => {
     }
 
     if (commands[2] === "CONFIG") {
-      const value  = commands[6];
+      const value = commands[6];
       dataStore.set("dir", path);
       dataStore.set("dbfilename", file);
       let result = dataStore.get(value);
@@ -51,9 +51,8 @@ const server = net.createServer((connection) => {
       ];
       const redisResponse = `*${responseArr.length}\r\n${responseArr.join("")}`;
       connection.write(redisResponse);
-    } else {
-      connection.write("+PONG\r\n"); // Default response for any unsupported commands
     }
+    connection.write("+PONG\r\n");
   });
 });
 
