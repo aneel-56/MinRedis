@@ -13,8 +13,8 @@ const server = net.createServer((connection) => {
   connection.on("data", (data) => {
     const commands = Buffer.from(data).toString().split("\r\n");
     // const [, , dir, path, dbfilename, file] = process.argv;
-    let dir = "";
-    let dbfilename = "";
+    let dir = null;
+    let dbfilename = null;
     const args = process.argv.slice(2);
     for (let i = 0; i < args.length; i++) {
       if (args[i] === "--dir") {
@@ -25,7 +25,7 @@ const server = net.createServer((connection) => {
     }
     if (dir && dbfilename) {
       dataStore.set("dir", dir);
-      dataStore.set("dbfileName", dbfilename);
+      dataStore.set("dbfilename", dbfilename);
       const rdbFilePath = path.join(
         dataStore.get("dir"),
         dataStore.get("dbfilename")
