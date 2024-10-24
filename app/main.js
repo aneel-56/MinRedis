@@ -11,19 +11,44 @@ const server = net.createServer((connection) => {
   // Handle connection
   connection.on("data", (data) => {
     const commands = Buffer.from(data).toString().split("\r\n");
-    const [, , dir, path, dbfilename, file] = process.argv;
-    dataStore.set("dir", path);
-    dataStore.set("dbfilename", file);
-
-    if (dataStore.get("dir") && dataStore.get("dbfilename")) {
-      const rdbFilePath = `${dataStore.get("dir")}/${dataStore.get(
-        "dbfileName"
-      )}`;
-      let rdb = fs.readFileSync(rdbFilePath);
-      if (!rdb) {
-        console.log("The file path does not exist ");
+    // const [, , dir, path, dbfilename, file] = process.argv;
+    let dir = null;
+    let dbfilename = null;
+    const args = process.argv.slice(2);
+    for (let i = 0; i < args.length; i++) {
+      if (args[i] === "--dir") {
+        dir = args[i + 1];
+      }
+      if (args[i] === "--dbfilename") {
+        dbfilename = args[i + 1];
       }
     }
+    if (dir && dbfilename) {
+      dataStore.set("dir", dir);
+      dataStore.set("dbfileName", dbfilename);
+    }
+    const rdbFilePath = `${dataStore.get("dir")}/${dataStore.get(
+      "dbfilename"
+    )}`;
+    let rdb;
+
+    try {
+      rdb = fs.readFileSync(rdbFilePath);
+    } catch (err) {
+      console.log("Error reading RDB file:", err.message);
+    }
+    // dataStore.set("dir", path);
+    // dataStore.set("dbfilename", file);
+
+    // if (dataStore.get("dir") && dataStore.get("dbfilename")) {
+    //   const rdbFilePath = `${dataStore.get("dir")}/${dataStore.get(
+    //     "dbfileName"
+    //   )}`;
+    //   let rdb = fs.readFileSync(rdbFilePath);
+    //   if (!rdb) {
+    //     console.log("The file path does not exist ");
+    //   }
+    // }
     if (commands[2] === "SET") {
       connection.write("+OK\r\n"); // Redis protocol for success
       store.set(commands[4], commands[6]);
