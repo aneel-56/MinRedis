@@ -4,7 +4,7 @@ function getKeyValues(data) {
   let cursor = 9;
   const keys = [];
   while (cursor < data.length) {
-    let marker = data.readUInt8(cursor);
+    let marker = cursor;
 
     if (marker === 0xfe) {
       //start of the database
