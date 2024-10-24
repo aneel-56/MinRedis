@@ -4,7 +4,7 @@ function getKeyValues(data) {
   let cursor = 9;
   const keys = [];
   while (cursor < data.length) {
-    const marker = data.readUInt8(cursor);
+    let marker = data.readUInt8(cursor);
     cursor++;
 
     if (marker === 0xfe) {
