@@ -5,7 +5,6 @@ function getKeyValues(data) {
   const keys = [];
   while (cursor < data.length) {
     let marker = data.readUInt8(cursor);
-    cursor++;
 
     if (marker === 0xfe) {
       //start of the database
@@ -41,6 +40,7 @@ function getKeyValues(data) {
       );
       throw new Error(`Unexpected marker: 0x${marker.toString(16)}`);
     }
+    cursor++;
   }
   return keys;
 }
