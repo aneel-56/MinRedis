@@ -27,7 +27,7 @@ const server = net.createServer((connection) => {
       dataStore.set("dir", dir);
       dataStore.set("dbfileName", dbfilename);
     }
-    const rdbFilePath = path.resolve(
+    const rdbFilePath = path.join(
       dataStore.get("dir"),
       dataStore.get(dbfilename)
     );
