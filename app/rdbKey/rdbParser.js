@@ -1,6 +1,6 @@
 // import fs from "fs";
 
-export function getKeyValues(data) {
+function getKeyValues(data) {
   let cursor = 9;
   const keys = [];
   while (cursor < data.length) {
@@ -36,7 +36,7 @@ export function getKeyValues(data) {
   return keys;
 }
 
- function parseSizeEncoding(buffer, cursor) {
+function parseSizeEncoding(buffer, cursor) {
   const byte = buffer.readUInt8(cursor);
   if (byte >> 6 === 0b00) {
     return ([size, nextCursor] = [byte & 0x3f, cursor + 1]);
@@ -49,3 +49,5 @@ export function getKeyValues(data) {
     return ([size, nextCursor] = [buffer.readUInt32(offset + 1), cursor + 5]);
   } else throw new Error("Unsupported encoding");
 }
+
+module.exports = getKeyValues;
