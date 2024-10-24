@@ -27,12 +27,19 @@ function getKeyValues(data) {
       nextCursor = valueNextCursor + valueSize;
 
       keys.push(key);
-    } else if (marker === 0xff) {
+    } else if (marker === 0xfa) {
+      // Auxiliary field or metadata (skip it)
+      console.log("Skipping auxiliary field with marker 0xfa");
+      cursor += 2;
+    } // Assuming a 2-byte auxiliary field (adjust as needed)
+    else if (marker === 0xff) {
       // End of file
       break;
     } else {
-        console.error(`Unexpected marker: 0x${marker.toString(16)} at position ${cursor}`);
-        throw new Error(`Unexpected marker: 0x${marker.toString(16)}`);
+      console.error(
+        `Unexpected marker: 0x${marker.toString(16)} at position ${cursor}`
+      );
+      throw new Error(`Unexpected marker: 0x${marker.toString(16)}`);
     }
   }
   return keys;
