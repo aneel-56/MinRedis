@@ -1,6 +1,6 @@
 const net = require("net");
 const fs = require("fs");
-const { getKeyValues } = require("./rdbKey/rdbParser.js");
+const { getKeyValues } = require("./rdbKey/rdbParser.js").default;
 console.log("Logs from your program will appear here!");
 
 const store = new Map();
