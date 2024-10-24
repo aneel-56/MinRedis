@@ -1,6 +1,6 @@
 const net = require("net");
 const fs = require("fs");
-const { getKeyValues } = require("./rdbKey/rdbParser.js")
+const { getKeyValues } = require("./rdbKey/rdbParser.js");
 console.log("Logs from your program will appear here!");
 
 const store = new Map();
@@ -65,7 +65,12 @@ const server = net.createServer((connection) => {
 
     if (commands[2] === "KEYS") {
       const redis_key = getKeyValues(rdb);
-      connection.write(redis_key);
+      const keys = redis_key.map((entry) => entry.key);
+      let response = `*${keys.length}\r\n`;
+      keys.forEach((key) => {
+        response += `$${key.length}\r\n${key}\r\n`;
+      });
+      connection.write(response);
     }
     if (commands[2] === "PING") connection.write("+PONG\r\n");
   });

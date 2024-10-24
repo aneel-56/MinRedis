@@ -5,6 +5,7 @@ function getKeyValues(data) {
   const keys = [];
   while (cursor < data.length) {
     const marker = data.readUInt8(cursor);
+    cursor++;
 
     if (marker === 0xfe) {
       //start of the database
@@ -39,14 +40,11 @@ function getKeyValues(data) {
 function parseSizeEncoding(buffer, cursor) {
   const byte = buffer.readUInt8(cursor);
   if (byte >> 6 === 0b00) {
-    return ([size, nextCursor] = [byte & 0x3f, cursor + 1]);
+    return [byte & 0x3f, cursor + 1];
   } else if (byte >> 6 === 0b01) {
-    return ([size, nextCursor] = [
-      ((byte & 0x3f) << 8) | buffer.readUInt8(cursor + 1),
-      cursor + 2,
-    ]);
+    return [((byte & 0x3f) << 8) | buffer.readUInt8(cursor + 1), cursor + 2];
   } else if (byte >> 6 === 0b10) {
-    return ([size, nextCursor] = [buffer.readUInt32(offset + 1), cursor + 5]);
+    return [buffer.readUInt32(offset + 1), cursor + 5];
   } else throw new Error("Unsupported encoding");
 }
 
