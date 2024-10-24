@@ -1,4 +1,4 @@
-import fs from "fs";
+// import fs from "fs";
 
 export function getKeyValues(data) {
   let cursor = 9;
@@ -36,7 +36,7 @@ export function getKeyValues(data) {
   return keys;
 }
 
-export function parseSizeEncoding(buffer, cursor) {
+ function parseSizeEncoding(buffer, cursor) {
   const byte = buffer.readUInt8(cursor);
   if (byte >> 6 === 0b00) {
     return ([size, nextCursor] = [byte & 0x3f, cursor + 1]);
