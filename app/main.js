@@ -6,6 +6,7 @@ console.log("Logs from your program will appear here!");
 
 const store = new Map();
 const dataStore = new Map(); // Store for configuration and other data
+let rdb;
 
 // Parse command-line arguments for --dir and --dbfilename
 const server = net.createServer((connection) => {
@@ -30,7 +31,6 @@ const server = net.createServer((connection) => {
         dataStore.get("dir"),
         dataStore.get("dbfilename")
       );
-      let rdb;
 
       try {
         rdb = fs.readFileSync(rdbFilePath);
