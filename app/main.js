@@ -1,5 +1,6 @@
 const net = require("net");
 const fs = require("fs");
+const { parseRdbFile } = require("./rdbKey/rdbParser");
 console.log("Logs from your program will appear here!");
 
 const store = new Map();
@@ -11,7 +12,18 @@ const server = net.createServer((connection) => {
   connection.on("data", (data) => {
     const commands = Buffer.from(data).toString().split("\r\n");
     const [, , dir, path, dbfilename, file] = process.argv;
+    dataStore.set("dir", path);
+    dataStore.set("dbfilename", file);
 
+    if (dataStore.get("dir") && dataStore.get("dbfilename")) {
+      const rdbFilePath = `${dataStore.get("dir")}/${dataStore.get(
+        "dbfileName"
+      )}`;
+      const rdb = fs.readFileSync(rdbFilePath);
+      if (!rdb) {
+        console.log("The file path does not exist ");
+      }
+    }
     if (commands[2] === "SET") {
       connection.write("+OK\r\n"); // Redis protocol for success
       store.set(commands[4], commands[6]);
@@ -42,8 +54,6 @@ const server = net.createServer((connection) => {
 
     if (commands[2] === "CONFIG") {
       const value = commands[6];
-      dataStore.set("dir", path);
-      dataStore.set("dbfilename", file);
       let result = dataStore.get(value);
       const responseArr = [
         `$${value.length}\r\n${value}\r\n`,
@@ -51,6 +61,11 @@ const server = net.createServer((connection) => {
       ];
       const redisResponse = `*${responseArr.length}\r\n${responseArr.join("")}`;
       connection.write(redisResponse);
+    }
+
+    if (commands[2] === "KEYS") {
+      const redis_key = getKeyValues(rdb);
+      connection.write(redis_key);
     }
     if (commands[2] === "PING") connection.write("+PONG\r\n");
   });
