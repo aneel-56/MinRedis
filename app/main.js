@@ -26,18 +26,18 @@ const server = net.createServer((connection) => {
     if (dir && dbfilename) {
       dataStore.set("dir", dir);
       dataStore.set("dbfileName", dbfilename);
-    }
-    const rdbFilePath = path.join(
-      dataStore.get("dir"),
-      dataStore.get("dbfilename")
-    );
-    let rdb;
+      const rdbFilePath = path.join(
+        dataStore.get("dir"),
+        dataStore.get("dbfilename")
+      );
+      let rdb;
 
-    try {
-      rdb = fs.readFileSync(rdbFilePath);
-      console.log(Buffer.from(rdb));
-    } catch (err) {
-      console.log("Error reading RDB file:", err.message);
+      try {
+        rdb = fs.readFileSync(rdbFilePath);
+        console.log(Buffer.from(rdb));
+      } catch (err) {
+        console.log("Error reading RDB file:", err.message);
+      }
     }
     // dataStore.set("dir", path);
     // dataStore.set("dbfilename", file);
