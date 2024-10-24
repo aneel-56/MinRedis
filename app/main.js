@@ -34,10 +34,10 @@ const server = net.createServer((connection) => {
 
     try {
       rdb = fs.readFileSync(rdbFilePath);
+      console.log(Buffer.from(rdb));
     } catch (err) {
       console.log("Error reading RDB file:", err.message);
     }
-    console.log(rdb);
     // dataStore.set("dir", path);
     // dataStore.set("dbfilename", file);
 
