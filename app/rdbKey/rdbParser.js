@@ -50,4 +50,4 @@ function parseSizeEncoding(buffer, cursor) {
   } else throw new Error("Unsupported encoding");
 }
 
-export default getKeyValues;
+module.exports = getKeyValues;
