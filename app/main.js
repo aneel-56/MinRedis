@@ -1,5 +1,6 @@
 const net = require("net");
 const fs = require("fs");
+const path = require("path");
 const { getKeyValues } = require("./rdbKey/rdbParser.js");
 console.log("Logs from your program will appear here!");
 
