@@ -14,12 +14,12 @@ const server = net.createServer((connection) => {
     const [, , dir, path, dbfilename, file] = process.argv;
     dataStore.set("dir", path);
     dataStore.set("dbfilename", file);
-    let rdb = [];
-    if (dataStore.get(dir) && dataStore.get(dbfilename)) {
+
+    if (dataStore.get("dir") && dataStore.get("dbfilename")) {
       const rdbFilePath = `${dataStore.get("dir")}/${dataStore.get(
         "dbfileName"
       )}`;
-      rdb = fs.readFileSync(rdbFilePath);
+      let rdb = fs.readFileSync(rdbFilePath);
       if (!rdb) {
         console.log("The file path does not exist ");
       }
