@@ -31,7 +31,7 @@ function getKeyValues(data) {
       // End of file
       break;
     } else {
-      throw new Error(`Unexpected marker ${marker}`);
+      throw new Error(`Unexpected marker`);
     }
   }
   return keys;
