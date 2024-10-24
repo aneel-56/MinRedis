@@ -18,8 +18,7 @@ const server = net.createServer((connection) => {
     for (let i = 0; i < args.length; i++) {
       if (args[i] === "--dir") {
         dir = args[i + 1];
-      }
-      if (args[i] === "--dbfilename") {
+      } else if (args[i] === "--dbfilename") {
         dbfilename = args[i + 1];
       }
     }
