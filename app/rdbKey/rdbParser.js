@@ -31,7 +31,8 @@ function getKeyValues(data) {
       // End of file
       break;
     } else {
-      throw new Error(`Unexpected marker`);
+        console.error(`Unexpected marker: 0x${marker.toString(16)} at position ${cursor}`);
+        throw new Error(`Unexpected marker: 0x${marker.toString(16)}`);
     }
   }
   return keys;
