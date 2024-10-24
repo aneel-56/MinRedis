@@ -1,10 +1,10 @@
 // import fs from "fs";
 
 function getKeyValues(data) {
-  let cursor = 9;
+  let cursor = 12;
   const keys = [];
   while (cursor < data.length) {
-    let marker = cursor;
+    let marker = data.readUInt8(cursor);
 
     if (marker === 0xfe) {
       //start of the database
