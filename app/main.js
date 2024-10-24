@@ -15,7 +15,7 @@ const server = net.createServer((connection) => {
     dataStore.set("dir", path);
     dataStore.set("dbfilename", file);
 
-    if (dataStore.get("dir") && dataStore.get("dbfilename")) {
+    if (dataStore.get(dir) && dataStore.get(dbfilename)) {
       const rdbFilePath = `${dataStore.get("dir")}/${dataStore.get(
         "dbfileName"
       )}`;
