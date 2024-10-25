@@ -105,12 +105,13 @@ const server = net.createServer((connection) => {
       // Construct RESP array for all keys
       let response = `*${keys.length}\r\n`;
       keys.forEach((key) => {
-        response += `$${key.length}\r\n${key}\r\n`;
+        response += `$${key.length}\r\n${key}\r\n`; // Separate each key as its own bulk string
       });
 
       console.log("KEYS * Response:", response);
       connection.write(response);
     }
+
     if (commands[2] === "PING") connection.write("+PONG\r\n");
   });
 });
