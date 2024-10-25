@@ -33,6 +33,12 @@ function getKeyValues(data) {
     cursor += 4;
   }
   cursor++;
+  console.log(
+    "Cursor before redisKeyLength:",
+    cursor,
+    "Byte at cursor:",
+    data[cursor]
+  );
   const redisKeyLength = data[cursor];
   const redisKey = data
     .slice(cursor + 1, cursor + 1 + redisKeyLength)
