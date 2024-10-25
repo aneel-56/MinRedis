@@ -93,7 +93,7 @@ const server = net.createServer((connection) => {
     if (commands[2] === "KEYS") {
       const redis_key = getKeyValues(rdb);
       console.log(redis_key);
-      const keys = redis_key.map((entry) => entry.key);
+      const keys = redis_key.map((entry) => key);
       console.log(keys);
       let response = `*${keys.length}\r\n`;
       keys.forEach((key) => {
