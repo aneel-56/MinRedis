@@ -87,10 +87,9 @@ const server = net.createServer((connection) => {
 
     if (commands[2] === "KEYS") {
       // const redis_key = getKeyValues(rdb);
-      // const [redisKey, redisValue] = getKeyValues(rdb);
-      const redisKey = dataStore.get(commands[4]);
-      connection.write(redisKey);
-      // console.log(redisKey);
+      const [redisKey, redisValue] = getKeyValues(rdb);
+      console.log(redisKey);
+      console.log(redisValue);
       // const keys = redisKey;
       // console.log(keys);
       // let response = `*${keys.length}\r\n`;
