@@ -6,6 +6,7 @@ console.log("Logs from your program will appear here!");
 
 const store = new Map();
 const dataStore = new Map(); // Store for configuration and other data
+const rdbKey = new Map();
 let rdb;
 
 // Parse command-line arguments for --dir and --dbfilename
@@ -98,10 +99,11 @@ const server = net.createServer((connection) => {
       let response = `*${keys.length}\r\n`;
       keys.forEach((key) => {
         response += `$${key.length}\r\n${key}\r\n`;
+        rdb.set("key", redis_key);
       });
       connection.write(response);
     }
-    if (commands[2] === "GET" && commands[4] === keys) {
+    if (commands[2] === "GET" && commands[4] === rdb.get("key")) {
       console.log("This is the request llo");
     }
     if (commands[2] === "PING") connection.write("+PONG\r\n");
