@@ -23,7 +23,7 @@ function getKeyValues(data) {
   }
   cursor++;
   let length;
-  while (cursor < data.length) {
+  while (cursor < data.length - 1) {
     [length, cursor] = handleLengthEncoding(data, cursor);
     if (data[cursor] === OPCODES.EXPIRETIME) {
       cursor++;
