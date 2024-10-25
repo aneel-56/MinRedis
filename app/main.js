@@ -98,8 +98,8 @@ const server = net.createServer((connection) => {
       console.log("********");
       let mulRes = "";
       let header = `*${dataStore.size}\r\n`;
-      for (let i = 0; i < dataStore.size; i++) {
-        mulRes += `${dataStore[i].length}\r\n${dataStore[i]}\r\n`;
+      for (const [key, value] of dataStore.entries()) {
+        mulRes += `${dataStore.get(key).length}\r\n${dataStore.get(key)}\r\n`;
       }
       connection.write(header + mulRes);
     }
