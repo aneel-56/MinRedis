@@ -26,14 +26,17 @@ function getKeyValues(data) {
 
   cursor++;
   let length;
-  [length, cursor] = handleLengthEncoding(data, cursor);
-  cursor++;
-  [length, cursor] = handleLengthEncoding(data, cursor);
-  [length, cursor] = handleLengthEncoding(data, cursor);
 
-  if (data[cursor] === OPCODES.EXPIRETIME) {
-    cursor++;
-    cursor += 4;
+  while (cursor < data.length) {
+    [length, cursor] = handleLengthEncoding(data, cursor);
+
+    // Break if we hit the expiration time opcode
+    if (data[cursor] === OPCODES.EXPIRETIME) {
+      cursor++; // Move past the OPCODES.EXPIRETIME
+      cursor += 4; // Skip the expiration time (4 bytes)
+      break; // Exit the loop
+    }
+    // You may want to do something with the length here
   }
 
   cursor++;
