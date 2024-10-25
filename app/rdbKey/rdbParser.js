@@ -55,7 +55,7 @@ function getKeyValues(data) {
   const keyArray = [redisKey];
   console.log("Key Array:", keyArray);
 
-  return redisKey;
+  return keyArray;
 }
 
 module.exports = { getKeyValues };
