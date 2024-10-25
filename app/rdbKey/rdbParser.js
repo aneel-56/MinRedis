@@ -49,7 +49,7 @@ function getKeyValues(data) {
 
   const redisKey = data
     .subarray(cursor + 1, cursor + 1 + redisKeyLength)
-    .toString("ascii");
+    .toString();
   console.log("Redis Key:", redisKey);
 
   const keyArray = [...redisKey];
