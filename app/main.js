@@ -96,21 +96,18 @@ const server = net.createServer((connection) => {
     }
     if (commands[2] === "KEYS" && commands[3] === "*") {
       console.log("********");
-      let mulRes = "";
-      let keys = Array.from(dataStore.keys()).filter(
+      // Get all keys, excluding config entries
+      const keys = Array.from(dataStore.keys()).filter(
         (key) => key !== "dir" && key !== "dbfilename"
       );
 
-      // Header: indicates the number of elements in the array
-      let header = `*${keys.length}\r\n`;
-
-      // Each key is formatted as a bulk string
+      // Construct RESP array for all keys
+      let response = `*${keys.length}\r\n`;
       keys.forEach((key) => {
-        mulRes += `$${key.length}\r\n${key}\r\n`;
+        response += `$${key.length}\r\n${key}\r\n`;
       });
 
-      // Send the full RESP-formatted response
-      connection.write(header + mulRes);
+      connection.write(response);
     }
     if (commands[2] === "PING") connection.write("+PONG\r\n");
   });
