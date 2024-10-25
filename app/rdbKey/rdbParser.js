@@ -55,6 +55,7 @@ function getKeyValues(data) {
   const redisValueLength = data[cursor];
   const redisValue = data.subarray(cursor + 1, cursor + 1 + redisValueLength);
   keyValues.push([redisKey, redisValue]);
+  console.log(keyValues);
   cursor = cursor + 1 + redisValueLength;
   // const keyArray = [redisKey];
   // console.log("Key Array:", keyArray);
