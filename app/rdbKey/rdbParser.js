@@ -6,7 +6,7 @@ function handleLengthEncoding(data, cursor) {
   const lengthValues = [
     [byte & 0b00111111, cursor + 1],
     [((byte & 0b00111111) < 8) | data[cursor + 1], cursor + 2],
-    [(data.readUInt32BE(cursor + 1), cursor + 5)],
+    [data.readUInt32BE(cursor + 1), cursor + 5],
   ];
   return (
     lengthValues[lengthType] ||
