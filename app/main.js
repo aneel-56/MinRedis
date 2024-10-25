@@ -4,7 +4,6 @@ const path = require("path");
 const { getKeyValues } = require("./rdbKey/rdbParser.js");
 console.log("Logs from your program will appear here!");
 
-const store = new Map();
 const dataStore = new Map(); // Store for configuration and other data
 let rdb;
 
@@ -47,10 +46,10 @@ const server = net.createServer((connection) => {
 
     if (commands[2] === "SET") {
       connection.write("+OK\r\n"); // Redis protocol for success
-      store.set(commands[4], commands[6]);
+      dataStore.set(commands[4], commands[6]);
       if (commands[10]) {
         setTimeout(() => {
-          store.delete(commands[4]);
+          dataStore.delete(commands[4]);
         }, commands[10]);
       }
     }
@@ -87,15 +86,13 @@ const server = net.createServer((connection) => {
     if (commands[2] === "KEYS") {
       // const redis_key = getKeyValues(rdb);
       const [redisKey, redisValue] = getKeyValues(rdb);
-      console.log(redisKey);
-      console.log(redisValue);
-      // const keys = redisKey;
-      // console.log(keys);
-      // let response = `*${keys.length}\r\n`;
-      // keys.forEach((key) => {
-      //   response += `$${key.length}\r\n${key}\r\n`;
-      // });
-      // connection.write(response);
+      const keys = redisKey;
+      console.log(keys);
+      let response = `*${keys.length}\r\n`;
+      keys.forEach((key) => {
+        response += `$${key.length}\r\n${key}\r\n`;
+      });
+      connection.write(response);
     }
     if (commands[2] === "PING") connection.write("+PONG\r\n");
   });
