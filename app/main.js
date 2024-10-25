@@ -100,6 +100,7 @@ const server = net.createServer((connection) => {
       keys.forEach((key) => {
         response += `$${key.length}\r\n${key}\r\n`;
         rdb.set("key", redis_key);
+        console.log(rdb);
       });
       connection.write(response);
     }
