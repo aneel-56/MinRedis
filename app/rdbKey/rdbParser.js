@@ -57,3 +57,5 @@ function getKeyValues(data) {
 
   return keyArray;
 }
+
+module.exports = { getKeyValues };
