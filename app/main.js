@@ -35,6 +35,11 @@ const server = net.createServer((connection) => {
 
       try {
         rdb = fs.readFileSync(rdbFilePath);
+        if (rdb) {
+          const [redisKey, redisValue] = getKeyValues(rdb);
+          clg("rdb", redisKey, redisValue);
+          dataStore.set(redisKey, redisValue);
+        }
         console.log(Buffer.from(rdb));
       } catch (err) {
         console.log("Error reading RDB file:", err.message);
@@ -92,20 +97,16 @@ const server = net.createServer((connection) => {
     }
 
     if (commands[2] === "KEYS") {
-      const redis_key = getKeyValues(rdb);
-      console.log(redis_key);
-      const keys = redis_key;
+      // const redis_key = getKeyValues(rdb);
+      const [redisKey, redisValue] = getKeyValues(rdb);
+      console.log(redisKey);
+      const keys = redisKey;
       console.log(keys);
       let response = `*${keys.length}\r\n`;
       keys.forEach((key) => {
         response += `$${key.length}\r\n${key}\r\n`;
-        rdb.set("key", redis_key);
-        console.log(rdb);
       });
       connection.write(response);
-    }
-    if (commands[2] === "GET" && commands[4] === rdb.get("key")) {
-      console.log("This is the request llo");
     }
     if (commands[2] === "PING") connection.write("+PONG\r\n");
   });
