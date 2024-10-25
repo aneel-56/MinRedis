@@ -6,7 +6,9 @@ function handleLengthEncoding(data, cursor) {
   const lengthValues = [
     [byte & 0b00111111, cursor + 1],
     [((byte & 0b00111111) < 8) | data[cursor + 1], cursor + 2],
-    [data.readUInt32BE(cursor + 1), cursor + 5],
+    data.length >= cursor + 5
+      ? [data.readUInt32BE(cursor + 1), cursor + 5]
+      : [null, cursor],
   ];
   return (
     lengthValues[lengthType] ||
@@ -17,13 +19,13 @@ function handleLengthEncoding(data, cursor) {
 function getKeyValues(data) {
   const { REDIS_MAGIC_STRING, REDIS_VERSION } = redis_main_const;
   let cursor = REDIS_MAGIC_STRING + REDIS_VERSION;
-  while (cursor < data.length -1) {
+  while (cursor < data.length) {
     if (data[cursor] === OPCODES.SELECTDB) break;
     cursor++;
   }
   cursor++;
   let length;
-  while (cursor < data.length - 1) {
+  while (cursor < data.length) {
     [length, cursor] = handleLengthEncoding(data, cursor);
     if (data[cursor] === OPCODES.EXPIRETIME) {
       cursor++;
