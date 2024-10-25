@@ -36,7 +36,7 @@ function getKeyValues(data) {
   cursor++;
   const redisKeyLength = data[cursor];
   const redisKey = data
-    .subArray(cursor + 1, cursor + 1 + redisKeyLength)
+    .slice(cursor + 1, cursor + 1 + redisKeyLength)
     .toString();
   return redisKey;
 }
