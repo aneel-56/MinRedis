@@ -1,59 +1,42 @@
-// import fs from "fs";
+const { redis_main_const, OPCODES } = require("./rdbConts.js");
 
-function getKeyValues(data) {
-  let cursor = 12;
-  const keys = [];
-  while (cursor < data.length) {
-    let marker = data.readUInt8(cursor);
-
-    if (marker === 0xfe) {
-      //start of the database
-      const [size, nextCursor] = parseSizeEncoding(data, cursor);
-      cursor = nextCursor;
-    } else if (marker === 0xfb) {
-      //hash table size info
-      const [size, nextCursor] = parseSizeEncoding(data, cursor);
-      cursor = nextCursor + 2;
-    } else if (marker === 0x00) {
-      const [size, nextCursor] = parseSizeEncoding(data, cursor);
-      const key = data.slice(nextCursor, nextCursor + size).toString("ascii");
-      nextCursor = nextCursor + size;
-
-      const [valueSize, valueNextCursor] = parseSizeEncoding(data, cursor);
-      const value = data
-        .slice(valueNextCursor, valueNextCursor + valueSize)
-        .toString("ascii");
-      nextCursor = valueNextCursor + valueSize;
-
-      keys.push(key);
-    } else if (marker === 0xfa) {
-      // Auxiliary field or metadata (skip it)
-      console.log("Skipping auxiliary field with marker 0xfa");
-      cursor += 2;
-    } // Assuming a 2-byte auxiliary field (adjust as needed)
-    else if (marker === 0xff) {
-      // End of file
-      break;
-    } else {
-      console.error(
-        `Unexpected marker: 0x${marker.toString(16)} at position ${cursor}`
-      );
-      throw new Error(`Unexpected marker: 0x${marker.toString(16)}`);
-    }
-    cursor++;
-  }
-  return keys;
+function handleLengthEncoding(data, cursor) {
+  const byte = data[cursor];
+  const lengthType = (byte & 0b01) >> 6;
+  const lengthValues = [
+    [byte & 0b00111111, cursor + 1],
+    [((byte & 0b00111111) < 8) | data[cursor + 1], cursor + 2],
+    [(data.readUInt32(cursor + 1), cursor + 5)],
+  ];
+  return (
+    lengthValues[lengthType] ||
+    new Error(`Invalid length Encoding ${lengthType} at ${cursor}`)
+  );
 }
 
-function parseSizeEncoding(buffer, cursor) {
-  const byte = buffer.readUInt8(cursor);
-  if (byte >> 6 === 0b00) {
-    return [byte & 0x3f, cursor + 1];
-  } else if (byte >> 6 === 0b01) {
-    return [((byte & 0x3f) << 8) | buffer.readUInt8(cursor + 1), cursor + 2];
-  } else if (byte >> 6 === 0b10) {
-    return [buffer.readUInt32(offset + 1), cursor + 5];
-  } else throw new Error("Unsupported encoding");
+function getKeyValues(data) {
+  const { REDIS_MAGIC_STRING, REDIS_VERSION } = redis_main_const;
+  let cursor = REDIS_MAGIC_STRING + REDIS_VERSION;
+  while (cursor < data.length) {
+    if (data[cursor] === OPCODES.SELECTDB) break;
+    cursor++;
+  }
+  cursor++;
+  let length;
+  while (cursor < data.length) {
+    [length, cursor] = handleLengthEncoding(data, cursor);
+    if (data[cursor] === OPCODES.EXPIRETIME) {
+      cursor++;
+      cursor += 4;
+      break;
+    }
+  }
+  cursor++;
+  const redisKeyLength = data[cursor];
+  const redisKey = data
+    .subArray(cursor + 1, cursor + 1 + redisKeyLength)
+    .toString();
+  return redisKey;
 }
 
 module.exports = { getKeyValues };
