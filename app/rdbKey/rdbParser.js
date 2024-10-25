@@ -25,13 +25,13 @@ function getKeyValues(data) {
   }
   cursor++;
   let length;
-  while (cursor < data.length) {
-    [length, cursor] = handleLengthEncoding(data, cursor);
-    if (data[cursor] === OPCODES.EXPIRETIME) {
-      cursor++;
-      cursor += 4;
-      break;
-    }
+  [length, cursor] = handleLengthEncoding(data, cursor);
+  cursor++;
+  [length, cursor] = handleLengthEncoding(data, cursor);
+  [length, cursor] = handleLengthEncoding(data, cursor);
+  if (data[cursor] === OPCODES.EXPIRETIME) {
+    cursor++;
+    cursor += 4;
   }
   cursor++;
   const redisKeyLength = data[cursor];
