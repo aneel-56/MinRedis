@@ -38,6 +38,7 @@ const server = net.createServer((connection) => {
           const [redisKey, redisValue] = getKeyValues(rdb);
           console.log("rdb", redisKey, redisValue);
           dataStore.set(redisKey, redisValue);
+          console.log(dataStore);
         }
         console.log(Buffer.from(rdb));
       } catch (err) {
