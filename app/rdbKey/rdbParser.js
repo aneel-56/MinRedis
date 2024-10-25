@@ -52,7 +52,7 @@ function getKeyValues(data) {
     .toString();
   console.log("Redis Key:", redisKey);
 
-  const keyArray = [...redisKey];
+  const keyArray = [redisKey];
   console.log("Key Array:", keyArray);
 
   return redisKey;
