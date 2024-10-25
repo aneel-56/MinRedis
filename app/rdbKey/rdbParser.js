@@ -17,7 +17,7 @@ function handleLengthEncoding(data, cursor) {
 function getKeyValues(data) {
   const { REDIS_MAGIC_STRING, REDIS_VERSION } = redis_main_const;
   let cursor = REDIS_MAGIC_STRING + REDIS_VERSION;
-  while (cursor < data.length) {
+  while (cursor < data.length -1) {
     if (data[cursor] === OPCODES.SELECTDB) break;
     cursor++;
   }
