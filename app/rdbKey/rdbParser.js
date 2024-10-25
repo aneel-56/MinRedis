@@ -16,22 +16,26 @@ function handleLengthEncoding(data, cursor) {
 function getKeyValues(data) {
   const { REDIS_MAGIC_STRING, REDIS_VERSION } = redis_main_const;
   let cursor = REDIS_MAGIC_STRING + REDIS_VERSION;
+
   while (cursor < data.length) {
     if (data[cursor] === OPCODES.SELECTDB) {
       break;
     }
     cursor++;
   }
+
   cursor++;
   let length;
   [length, cursor] = handleLengthEncoding(data, cursor);
   cursor++;
   [length, cursor] = handleLengthEncoding(data, cursor);
   [length, cursor] = handleLengthEncoding(data, cursor);
+
   if (data[cursor] === OPCODES.EXPIRETIME) {
     cursor++;
     cursor += 4;
   }
+
   cursor++;
   console.log(
     "Cursor before redisKeyLength:",
@@ -39,12 +43,17 @@ function getKeyValues(data) {
     "Byte at cursor:",
     data[cursor]
   );
+
   const redisKeyLength = data[cursor];
+  console.log("Redis Key Length:", redisKeyLength);
+
   const redisKey = data
     .slice(cursor + 1, cursor + 1 + redisKeyLength)
     .toString("ascii");
-  return [...redisKey];
+  console.log("Redis Key:", redisKey);
+
+  const keyArray = [...redisKey];
+  console.log("Key Array:", keyArray);
+
+  return keyArray;
 }
-module.exports = {
-  getKeyValues,
-};
