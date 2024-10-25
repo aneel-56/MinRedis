@@ -91,16 +91,18 @@ const server = net.createServer((connection) => {
     }
 
     if (commands[2] === "KEYS") {
-      // const redis_key = getKeyValues(rdb);
-      // console.log(redis_key);
-      const [redisKey, redisValue] = getKeyValues(rdb);
-      const keys = redis_Key;
+      const redis_key = getKeyValues(rdb);
+      console.log(redis_key);
+      const keys = redis_key;
       console.log(keys);
       let response = `*${keys.length}\r\n`;
       keys.forEach((key) => {
         response += `$${key.length}\r\n${key}\r\n`;
       });
       connection.write(response);
+    }
+    if (commands[2] === "GET" && commands[4] === keys) {
+      console.log("This is the request llo");
     }
     if (commands[2] === "PING") connection.write("+PONG\r\n");
   });
