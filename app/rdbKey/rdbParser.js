@@ -48,14 +48,14 @@ function getKeyValues(data) {
   console.log("Redis Key Length:", redisKeyLength);
 
   const redisKey = data
-    .subarray(cursor + 1, cursor + 1 + redisKeyLength)
+    .slice(cursor + 1, cursor + 1 + redisKeyLength)
     .toString();
   console.log("Redis Key:", redisKey);
 
   const keyArray = [redisKey];
   console.log("Key Array:", keyArray);
 
-  return redisKey;
+  return keyArray;
 }
 
 module.exports = { getKeyValues };
