@@ -16,7 +16,7 @@ function handleLengthEncoding(data, cursor) {
 function getKeyValues(data) {
   const { REDIS_MAGIC_STRING, REDIS_VERSION } = redis_main_const;
   let cursor = REDIS_MAGIC_STRING + REDIS_VERSION;
-
+  const keyValues = [];
   while (cursor < data.length) {
     if (data[cursor] === OPCODES.SELECTDB) {
       break;
@@ -54,11 +54,12 @@ function getKeyValues(data) {
   cursor = cursor + 1 + redisKeyLength;
   const redisValueLength = data[cursor];
   const redisValue = data.subarray(cursor + 1, cursor + 1 + redisValueLength);
-  return [redisKey, redisValue];
+  keyValues.push([redisKey, redisValue]);
+  cursor = cursor + 1 + redisValueLength;
   // const keyArray = [redisKey];
   // console.log("Key Array:", keyArray);
 
-  return keyArray;
+  return keyValues;
 }
 
 module.exports = { getKeyValues };

@@ -33,10 +33,10 @@ const server = net.createServer((connection) => {
       try {
         rdb = fs.readFileSync(rdbFilePath);
         if (rdb) {
-          const [redisKey, redisValue] = getKeyValues(rdb);
-          console.log("rdb", redisKey, redisValue);
-          dataStore.set(redisKey, redisValue);
-          console.log(dataStore);
+          const keyValues = getKeyValues(rdb);
+          keyValues.forEach(([key, value]) => {
+            dataStore.set(key, value); // Add each key-value pair to dataStore
+          });
         }
         console.log(Buffer.from(rdb));
       } catch (err) {
@@ -95,7 +95,8 @@ const server = net.createServer((connection) => {
       connection.write(response);
     }
     if (commands[2] === "KEYS" && commands[3] === "*") {
-      console.log("********");
+      console.log("******** Handling KEYS * Command ********");
+
       // Get all keys, excluding config entries
       const keys = Array.from(dataStore.keys()).filter(
         (key) => key !== "dir" && key !== "dbfilename"
@@ -107,6 +108,7 @@ const server = net.createServer((connection) => {
         response += `$${key.length}\r\n${key}\r\n`;
       });
 
+      console.log("KEYS * Response:", response);
       connection.write(response);
     }
     if (commands[2] === "PING") connection.write("+PONG\r\n");
