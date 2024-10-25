@@ -6,7 +6,6 @@ console.log("Logs from your program will appear here!");
 
 const store = new Map();
 const dataStore = new Map(); // Store for configuration and other data
-const rdbKey = new Map();
 let rdb;
 
 // Parse command-line arguments for --dir and --dbfilename
@@ -57,7 +56,7 @@ const server = net.createServer((connection) => {
     }
 
     if (commands[2] === "GET") {
-      const res = store.get(commands[4]);
+      const res = dataStore.get(commands[4]);
       if (res) {
         // Respond with bulk string if key exists
         connection.write("$" + res.length + "\r\n" + res + "\r\n");
