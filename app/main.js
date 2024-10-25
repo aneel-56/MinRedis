@@ -14,7 +14,6 @@ const server = net.createServer((connection) => {
   // Handle connection
   connection.on("data", (data) => {
     const commands = Buffer.from(data).toString().split("\r\n");
-    // const [, , dir, path, dbfilename, file] = process.argv;
     let dir = null;
     let dbfilename = null;
     const args = process.argv.slice(2);
@@ -37,7 +36,7 @@ const server = net.createServer((connection) => {
         rdb = fs.readFileSync(rdbFilePath);
         if (rdb) {
           const [redisKey, redisValue] = getKeyValues(rdb);
-          clg("rdb", redisKey, redisValue);
+          console.log("rdb", redisKey, redisValue);
           dataStore.set(redisKey, redisValue);
         }
         console.log(Buffer.from(rdb));
@@ -45,18 +44,7 @@ const server = net.createServer((connection) => {
         console.log("Error reading RDB file:", err.message);
       }
     }
-    // dataStore.set("dir", path);
-    // dataStore.set("dbfilename", file);
 
-    // if (dataStore.get("dir") && dataStore.get("dbfilename")) {
-    //   const rdbFilePath = `${dataStore.get("dir")}/${dataStore.get(
-    //     "dbfileName"
-    //   )}`;
-    //   let rdb = fs.readFileSync(rdbFilePath);
-    //   if (!rdb) {
-    //     console.log("The file path does not exist ");
-    //   }
-    // }
     if (commands[2] === "SET") {
       connection.write("+OK\r\n"); // Redis protocol for success
       store.set(commands[4], commands[6]);
