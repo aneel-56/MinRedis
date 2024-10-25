@@ -93,16 +93,15 @@ const server = net.createServer((connection) => {
         response += `$${key.length}\r\n${key}\r\n`;
       });
       connection.write(response);
-
-      if (commands[2] === "KEYS" && commands[3] === "*") {
-        console.log("********");
-        let mulRes = "";
-        let header = `*${dataStore.size}\r\n`;
-        for (let i = 0; i < dataStore.size; i++) {
-          mulRes += `${dataStore[i].length}\r\n${dataStore[i]}\r\n`;
-        }
-        connection.write(header + mulRes);
+    }
+    if (commands[2] === "KEYS" && commands[3] === "*") {
+      console.log("********");
+      let mulRes = "";
+      let header = `*${dataStore.size}\r\n`;
+      for (let i = 0; i < dataStore.size; i++) {
+        mulRes += `${dataStore[i].length}\r\n${dataStore[i]}\r\n`;
       }
+      connection.write(header + mulRes);
     }
     if (commands[2] === "PING") connection.write("+PONG\r\n");
   });
