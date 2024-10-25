@@ -94,7 +94,7 @@ const server = net.createServer((connection) => {
       });
       connection.write(response);
 
-      if (commands[3] === "*") {
+      if (commands[2] === "KEYS" && commands[3] === "*") {
         console.log("********");
         let mulRes = "";
         let header = `*${dataStore.size}\r\n`;
