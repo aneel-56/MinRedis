@@ -2,10 +2,10 @@ const { redis_main_const, OPCODES } = require("./rdbConts.js");
 
 function handleLengthEncoding(data, cursor) {
   const byte = data[cursor];
-  const lengthType = (byte & 0b01) >> 6;
+  const lengthType = (byte & 0b11000000) >> 6;
   const lengthValues = [
     [byte & 0b00111111, cursor + 1],
-    [((byte & 0b00111111) < 8) | data[cursor + 1], cursor + 2],
+    [((byte & 0b00111111) << 8) | data[cursor + 1], cursor + 2],
     data.length >= cursor + 5
       ? [data.readUInt32BE(cursor + 1), cursor + 5]
       : [null, cursor],
