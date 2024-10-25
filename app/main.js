@@ -87,15 +87,17 @@ const server = net.createServer((connection) => {
 
     if (commands[2] === "KEYS") {
       // const redis_key = getKeyValues(rdb);
-      const [redisKey, redisValue] = getKeyValues(rdb);
-      console.log(redisKey);
-      const keys = redisKey;
-      console.log(keys);
-      let response = `*${keys.length}\r\n`;
-      keys.forEach((key) => {
-        response += `$${key.length}\r\n${key}\r\n`;
-      });
-      connection.write(response);
+      // const [redisKey, redisValue] = getKeyValues(rdb);
+      const redisKey = dataStore.get(commands[4]);
+      connection.write(redisKey);
+      // console.log(redisKey);
+      // const keys = redisKey;
+      // console.log(keys);
+      // let response = `*${keys.length}\r\n`;
+      // keys.forEach((key) => {
+      //   response += `$${key.length}\r\n${key}\r\n`;
+      // });
+      // connection.write(response);
     }
     if (commands[2] === "PING") connection.write("+PONG\r\n");
   });
