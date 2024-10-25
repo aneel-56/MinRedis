@@ -48,7 +48,6 @@ function getKeyValues(data) {
   console.log("Redis Key Length:", redisKeyLength);
 
   const redisKey = data
-    .subarray(cursor + 1, cursor + 1 + redisKeyLength)
     .toString();
   console.log("Redis Key:", redisKey);
 
