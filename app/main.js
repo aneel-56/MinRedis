@@ -95,6 +95,7 @@ const server = net.createServer((connection) => {
       connection.write(response);
 
       if (commands[3] === "*") {
+        console.log("********");
         let mulRes = "";
         let header = `*${dataStore.size}\r\n`;
         for (let i = 0; i < dataStore.size; i++) {
