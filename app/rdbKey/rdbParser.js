@@ -38,6 +38,7 @@ function getKeyValues(data) {
   const redisKey = data
     .slice(cursor + 1, cursor + 1 + redisKeyLength)
     .toString();
+  console.log(redisKey);
   return redisKey;
 }
 
