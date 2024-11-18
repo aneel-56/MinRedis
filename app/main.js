@@ -113,6 +113,7 @@ const server = net.createServer((connection) => {
         //   response += `$${key.length}\r\n${key}\r\n`; // Each key is a bulk string
         //   console.log("Key: " + key);
         // });
+        console.log(keys);
         keys.map((key) => {
           response += `$${key.length}\r\n${key}` + "\r\n";
         });
