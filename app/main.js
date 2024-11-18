@@ -2,7 +2,7 @@ const net = require("net");
 const fs = require("fs");
 const path = require("path");
 const { getKeyValues } = require("./rdbKey/rdbParser.js");
-console.log("Logs from your program will appear here!");
+// console.log("Logs from your program will appear here!");
 
 const dataStore = new Map(); // Store for configuration and other data
 let rdb;
@@ -12,6 +12,8 @@ const server = net.createServer((connection) => {
   // Handle connection
   connection.on("data", (data) => {
     const commands = Buffer.from(data).toString().split("\r\n");
+    console.log("Commands");
+    console.log(commands);
     let dir = null;
     let dbfilename = null;
     const args = process.argv.slice(2);
