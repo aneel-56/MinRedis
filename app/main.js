@@ -109,7 +109,7 @@ const server = net.createServer((connection) => {
         keys.forEach((key) => {
           response += `$${key.length}\r\n${key}\r\n`; // Each key is its own bulk string
           console.log("Keys");
-          console.log(keys);
+          console.log(key);
         });
 
         console.log("KEYS * Response:", response);
