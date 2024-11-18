@@ -106,12 +106,15 @@ const server = net.createServer((connection) => {
         );
 
         let response = `*${keys.length}\r\n`; // RESP array of keys
-        keys.forEach((key) => {
-          // Properly format each key as a bulk string
-          console.log("Key are");
-          console.log(key);
-          response += `$${key.length}\r\n${key}\r\n`; // Each key is a bulk string
-          console.log("Key: " + key);
+        // keys.forEach((key) => {
+        //   // Properly format each key as a bulk string
+        //   console.log("Key are");
+        //   console.log(key);
+        //   response += `$${key.length}\r\n${key}\r\n`; // Each key is a bulk string
+        //   console.log("Key: " + key);
+        // });
+        keys.map((key) => {
+          response += `$${key.length}\r\n${key}\r\n`;
         });
 
         console.log("KEYS * Response:", response);
