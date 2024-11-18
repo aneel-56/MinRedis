@@ -99,8 +99,6 @@ const server = net.createServer((connection) => {
         console.log("******** Handling KEYS * Command ********");
 
         // Get all keys, excluding config entries
-        console.log("**Actual Array");
-
         const keys = Array.from(dataStore.keys()).filter(
           (key) => key !== "dir" && key !== "dbfilename"
         );
@@ -113,6 +111,7 @@ const server = net.createServer((connection) => {
         //   response += `$${key.length}\r\n${key}\r\n`; // Each key is a bulk string
         //   console.log("Key: " + key);
         // });
+        console.log("Keys");
         console.log(keys);
         keys.map((key) => {
           response += `$${key.length}\r\n${key}` + "\r\n";
