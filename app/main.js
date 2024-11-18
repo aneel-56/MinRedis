@@ -93,25 +93,26 @@ const server = net.createServer((connection) => {
         response += `$${key.length}\r\n${key}\r\n`;
       });
       connection.write(response);
-    }
-    if (commands[2] === "KEYS" && commands[3] === "*") {
-      console.log("******** Handling KEYS * Command ********");
 
-      // Get all keys, excluding config entries
-      console.log("**Actual Array");
-      console.log(Buffer.from(dataStore));
-      const keys = Array.from(dataStore.keys()).filter(
-        (key) => key !== "dir" && key !== "dbfilename"
-      );
+      if (commands[2] === "KEYS" && commands[3] === "*") {
+        console.log("******** Handling KEYS * Command ********");
 
-      // Construct RESP array for all keys
-      let response = `*${keys.length}\r\n`;
-      keys.forEach((key) => {
-        response += `$${key.length}\r\n${key}\r\n`; // Separate each key as its own bulk string
-      });
+        // Get all keys, excluding config entries
+        console.log("**Actual Array");
+        console.log(Buffer.from(dataStore));
+        const keys = Array.from(dataStore.keys()).filter(
+          (key) => key !== "dir" && key !== "dbfilename"
+        );
 
-      console.log("KEYS * Response:", response);
-      connection.write(response);
+        // Construct RESP array for all keys
+        let response = `*${keys.length}\r\n`;
+        keys.forEach((key) => {
+          response += `$${key.length}\r\n${key}\r\n`; // Separate each key as its own bulk string
+        });
+
+        console.log("KEYS * Response:", response);
+        connection.write(response);
+      }
     }
 
     if (commands[2] === "PING") connection.write("+PONG\r\n");
