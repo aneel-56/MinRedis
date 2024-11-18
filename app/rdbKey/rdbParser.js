@@ -13,6 +13,8 @@ function handleLengthEncoding(data, cursor) {
     new Error(`Invalid length encoding ${lengthType} at ${cursor}`)
   );
 }
+
+
 function getKeyValues(data) {
   const { REDIS_MAGIC_STRING, REDIS_VERSION } = redis_main_const;
   let cursor = REDIS_MAGIC_STRING + REDIS_VERSION;
