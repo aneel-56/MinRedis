@@ -98,6 +98,8 @@ const server = net.createServer((connection) => {
       console.log("******** Handling KEYS * Command ********");
 
       // Get all keys, excluding config entries
+      console.log("**Actual Array");
+      console.log(Buffer.from(dataStore));
       const keys = Array.from(dataStore.keys()).filter(
         (key) => key !== "dir" && key !== "dbfilename"
       );
