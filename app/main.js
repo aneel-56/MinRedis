@@ -114,7 +114,7 @@ const server = net.createServer((connection) => {
         //   console.log("Key: " + key);
         // });
         keys.map((key) => {
-          response += `$${key.length}\r\n${key}\r\n`;
+          response += `$${key.length}\r\n${key}` + "\r\n";
         });
 
         console.log("KEYS * Response:", response);
