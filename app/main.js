@@ -105,15 +105,15 @@ const server = net.createServer((connection) => {
           (key) => key !== "dir" && key !== "dbfilename"
         );
 
-        let response = `*${keys.length}\r\n`;
+        let response = `*${keys.length}\r\n`; // RESP array of keys
         keys.forEach((key) => {
-          response += `$${key.length}\r\n${key}\r\n`; // Each key is its own bulk string
-          console.log("Keys");
-          console.log(key);
+          // Properly format each key as a bulk string
+          response += `$${key.length}\r\n${key}\r\n`; // Each key is a bulk string
+          console.log("Key: " + key);
         });
 
         console.log("KEYS * Response:", response);
-        connection.write(response);
+        connection.write(response); // Send the response to the connection
       }
     }
 
