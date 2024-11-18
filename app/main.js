@@ -94,7 +94,7 @@ const server = net.createServer((connection) => {
       });
       connection.write(response);
 
-      if (commands[2] === "KEYS" && commands[3] === "*") {
+      if (commands[1] === "KEYS" && commands[2] === "*") {
         console.log("******** Handling KEYS * Command ********");
 
         // Get all keys, excluding config entries
