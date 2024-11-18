@@ -100,7 +100,7 @@ const server = net.createServer((connection) => {
 
         // Get all keys, excluding config entries
         console.log("**Actual Array");
-        console.log(dataStore);
+
         const keys = Array.from(dataStore.keys()).filter(
           (key) => key !== "dir" && key !== "dbfilename"
         );
@@ -108,7 +108,7 @@ const server = net.createServer((connection) => {
         // Construct RESP array for all keys
         let response = `*${keys.length}\r\n`;
         keys.forEach((key) => {
-          response += `$${key.length}\r\n${key}\r\n`; // Separate each key as its own bulk string
+          response += `$${key.length}\r\n${key}\r\n\r\n`; // Separate each key as its own bulk string
         });
 
         console.log("KEYS * Response:", response);
