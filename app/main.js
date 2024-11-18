@@ -12,8 +12,7 @@ const server = net.createServer((connection) => {
   // Handle connection
   connection.on("data", (data) => {
     const commands = Buffer.from(data).toString().split("\r\n");
-    console.log("Commands");
-    console.log(commands);
+
     let dir = null;
     let dbfilename = null;
     const args = process.argv.slice(2);
@@ -96,7 +95,7 @@ const server = net.createServer((connection) => {
       });
       connection.write(response);
 
-      if (commands[1] === "KEYS" && commands[2] === "*") {
+      if (commands[2] === "KEYS" && commands[4] === "*") {
         console.log("******** Handling KEYS * Command ********");
 
         // Get all keys, excluding config entries
