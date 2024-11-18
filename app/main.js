@@ -104,11 +104,12 @@ const server = net.createServer((connection) => {
         const keys = Array.from(dataStore.keys()).filter(
           (key) => key !== "dir" && key !== "dbfilename"
         );
-        console.log("Keys");
-        console.log(keys);
+
         let response = `*${keys.length}\r\n`;
         keys.forEach((key) => {
           response += `$${key.length}\r\n${key}\r\n`; // Each key is its own bulk string
+          console.log("Keys");
+          console.log(keys);
         });
 
         console.log("KEYS * Response:", response);
